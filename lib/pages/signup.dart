@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:random_string/random_string.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key});
+  const SignUp({super. key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -31,10 +31,10 @@ class _SignUpState extends State<SignUp> {
             .createUserWithEmailAndPassword(email: email, password: password);
 
         String Id = randomAlphaNumeric(10);
-        String user = nameController.text;
+        String user = mailController.text.replaceAll("@gmail.com", "");
         String updateusername =
             user.replaceFirst(user[0], user[0].toUpperCase());
-        String firstLetter = user.substring(0, 2).toUpperCase();
+        String firstLetter = user.substring(0, 1).toUpperCase();
 
         Map<String, dynamic> userInfoMap = {
           "Name": nameController.text,
@@ -49,7 +49,7 @@ class _SignUpState extends State<SignUp> {
         await DatabaseMethods().addUserDetails(userInfoMap, Id);
         await SharedPreferenceHelper().saveUserId(Id);
         await SharedPreferenceHelper()
-            .saveUserName(mailController.text.replaceAll("@gmail.com", ""));
+            .saveUserName(mailController.text.replaceAll("@gmail.com", "").toUpperCase());
         await SharedPreferenceHelper().saveUserEmail(mailController.text);
         await SharedPreferenceHelper().saveDisplayName(nameController.text);
         await SharedPreferenceHelper().saveUserPic("https://firebasestorage.googleapis.com/v0/b/chat-a0c4d.appspot.com/o/img1.jpg?alt=media&token=4b61f9c4-bd36-43fd-b644-c953315550d1");
@@ -306,6 +306,9 @@ class _SignUpState extends State<SignUp> {
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Please enter confirm password";
+                                    } 
+                                    if (value != passwordController.text) {
+                                      return "Password do not match";
                                     }
                                     return null;
                                   },

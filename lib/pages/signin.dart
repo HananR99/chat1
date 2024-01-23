@@ -21,18 +21,6 @@ class _SignInState extends State<SignIn> {
 
   final _formkey = GlobalKey<FormState>();
 
-  // void showErrorMessage(String message) {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       backgroundColor: Colors.red,
-  //       content: Text(
-  //         message,
-  //         style: TextStyle(fontSize: 18.0, color: Colors.black),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   userLogin() async {
     try {
       await FirebaseAuth.instance

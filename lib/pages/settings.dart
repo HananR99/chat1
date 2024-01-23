@@ -32,22 +32,22 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> updateUserName(String newUserName) async {
-    // Update username in shared preferences
+    
     await SharedPreferenceHelper().saveUserName(newUserName);
 
-    // Update username in Firestore
+    
     String? userId = await SharedPreferenceHelper().getUserId();
     await FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
         .update({"username": newUserName});
 
-    // Reload user data
+  
     await loadUserData();
   }
 
   Future<void> updateProfilePic(File newImage) async {
-    // Upload new profile picture to Firebase Storage
+    
     String? userId = await SharedPreferenceHelper().getUserId();
     Reference storageReference = FirebaseStorage.instance
         .ref()
@@ -57,16 +57,16 @@ class _SettingsPageState extends State<SettingsPage> {
     await uploadTask.whenComplete(() async {
       String imageUrl = await storageReference.getDownloadURL();
 
-      // Update profile picture URL in shared preferences
+      
       await SharedPreferenceHelper().saveUserPic(imageUrl);
 
-      // Update profile picture URL in Firestore
+    
       await FirebaseFirestore.instance
           .collection("users")
           .doc(userId)
           .update({"photo": imageUrl});
 
-      // Reload user data
+      
       await loadUserData();
     });
   }
@@ -81,10 +81,9 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  // Function to perform sign-out
+  
   Future<void> signOut() async {
-    await SharedPreferenceHelper().clearUserData(); // Clear user data in shared preferences
-    // Navigate to the authentication page (you need to replace 'AuthPage' with the actual name of your authentication page)
+    await SharedPreferenceHelper().clearUserData(); 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 
